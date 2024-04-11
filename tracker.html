@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Locator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Link Locator</h1>
+    <p>Generate a unique tracking HTML link</p>
+    <form id="linkForm">
+        <label for="url">Enter URL:</label>
+        <input type="url" id="url" required><br>
+        <button type="submit">Generate Link</button>
+    </form>
+    <div id="map"></div>
+
+    <script>
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: -34.397, lng: 150.644 },
+                zoom: 6,
+            });
+            const infoWindow = new google.maps.InfoWindow();
+
+            document.getElementById("linkForm").addEventListener("submit", function (event) {
+                event.preventDefault();
+                const url = document.getElementById("url").value;
+                const link = generateTrackingLink(url);
+                const infoWindowContent = `<a href="${link}" target="_blank">${link}</a>`;
+                infoWindow.setContent(infoWindowContent);
+                infoWindow.open(map);
+            });
+        }
+
+        function generateTrackingLink(url) {
+            const uniqueID = Math.random().toString(36).substring(7);
+            return `https://example.com/track/${uniqueID}?redirect=${encodeURIComponent(url)}`;
+        }
+    </script>
+    <!-- Load the Maps JavaScript API -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
+    <!-- Replace YOUR_API_KEY with your actual Google Maps API key -->
+</body>
+</html>
